@@ -28,6 +28,10 @@ func (t *Table) WithTableIteratorFactory(iteratorFactory TableIteratorFactory) *
 	return t
 }
 
+func (t *Table) Name() string {
+	return t.name
+}
+
 func (t *Table) QueryByPrimaryKey(key interface{}, value interface{}) error {
 	record, ok := t.records[key]
 	if !ok {
