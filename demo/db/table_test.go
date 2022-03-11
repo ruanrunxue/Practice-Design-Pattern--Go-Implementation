@@ -5,26 +5,26 @@ import (
 	"testing"
 )
 
-type Region struct {
+type testRegion struct {
 	Id   int
 	Name string
 }
 
 func TestTable(t *testing.T) {
-	table := NewTable("region")
-	region := &Region{
+	table := NewTable("testRegion", NewRandomTableIteratorFactory())
+	region := &testRegion{
 		Id:   1,
 		Name: "beijing",
 	}
 	if err := table.Insert(1, region); err != nil {
 		t.Error(err)
 	}
-	table.Insert(2, &Region{Id: 2, Name: "beijing"})
-	record := new(Region)
+	table.Insert(2, &testRegion{Id: 2, Name: "beijing"})
+	record := new(testRegion)
 	if err := table.QueryByPrimaryKey(1, record); err != nil {
 		t.Error(err)
 	}
-	records, err := table.QueryByConditions(reflect.TypeOf(new(Region)), NewCondition("name", "beijing"))
+	records, err := table.QueryByConditions(reflect.TypeOf(new(testRegion)), NewCondition("name", "beijing"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -32,8 +32,8 @@ func TestTable(t *testing.T) {
 		t.Error("size invalid")
 	}
 
-	table.Update(2, &Region{Id: 2, Name: "shanghai"})
-	records, err = table.QueryByConditions(reflect.TypeOf(new(Region)), NewCondition("name", "beijing"))
+	table.Update(2, &testRegion{Id: 2, Name: "shanghai"})
+	records, err = table.QueryByConditions(reflect.TypeOf(new(testRegion)), NewCondition("name", "beijing"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -42,7 +42,7 @@ func TestTable(t *testing.T) {
 	}
 
 	table.Delete(1)
-	records, err = table.QueryByConditions(reflect.TypeOf(new(Region)), NewCondition("name", "beijing"))
+	records, err = table.QueryByConditions(reflect.TypeOf(new(testRegion)), NewCondition("name", "beijing"))
 	if err != nil {
 		t.Error(err)
 	}

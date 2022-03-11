@@ -39,16 +39,18 @@ func (i *Index) get(field string, value interface{}) []interface{} {
 
 // Table 数据表定义
 type Table struct {
-	name    string
-	index   Index
-	records map[interface{}]record
+	name            string
+	index           Index
+	records         map[interface{}]record
+	iteratorFactory TableIteratorFactory
 }
 
-func NewTable(name string) *Table {
+func NewTable(name string, iteratorFactory TableIteratorFactory) *Table {
 	return &Table{
-		name:    name,
-		index:   make(map[string]map[interface{}][]interface{}),
-		records: make(map[interface{}]record),
+		name:            name,
+		index:           make(map[string]map[interface{}][]interface{}),
+		records:         make(map[interface{}]record),
+		iteratorFactory: iteratorFactory,
 	}
 }
 
@@ -125,6 +127,10 @@ func (t *Table) Delete(key interface{}) error {
 	}
 	delete(t.records, key)
 	return nil
+}
+
+func (t *Table) Iterator() TableIterator {
+	return t.iteratorFactory.Create(t)
 }
 
 func (t *Table) queryByKeys(valType reflect.Type, keys []interface{}) ([]interface{}, error) {
