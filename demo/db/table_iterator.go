@@ -61,21 +61,18 @@ func NewRandomTableIteratorFactory() *randomTableIteratorFactory {
 	return &randomTableIteratorFactory{}
 }
 
-// Comparable 定义两个类型的比较逻辑
-type Comparable interface {
-	// Less 如果i<j返回ture，否则返回false
-	Less(i, j interface{}) bool
-}
+// Less 如果i<j返回ture，否则返回false
+type Less func(i, j interface{}) bool
 
 // records 辅助record记录根据主键排序
 type records struct {
-	comp Comparable
+	less Less
 	rs   []record
 }
 
-func newRecords(rs []record, comp Comparable) *records {
+func newRecords(rs []record, less Less) *records {
 	return &records{
-		comp: comp,
+		less: less,
 		rs:   rs,
 	}
 }
@@ -85,7 +82,7 @@ func (r *records) Len() int {
 }
 
 func (r *records) Less(i, j int) bool {
-	return r.comp.Less(r.rs[i].primaryKey, &r.rs[j].primaryKey)
+	return r.less(r.rs[i].primaryKey, r.rs[j].primaryKey)
 }
 
 func (r *records) Swap(i, j int) {
@@ -96,7 +93,7 @@ func (r *records) Swap(i, j int) {
 
 // sortedTableIteratorFactory 根据主键进行排序，排序逻辑由Comparable定义
 type sortedTableIteratorFactory struct {
-	comp Comparable
+	less Less
 }
 
 func (s *sortedTableIteratorFactory) Create(table *Table) TableIterator {
@@ -104,13 +101,13 @@ func (s *sortedTableIteratorFactory) Create(table *Table) TableIterator {
 	for _, r := range table.records {
 		records = append(records, r)
 	}
-	sort.Sort(newRecords(records, s.comp))
+	sort.Sort(newRecords(records, s.less))
 	return &tableIteratorImpl{
 		records: records,
 		cursor:  0,
 	}
 }
 
-func NewSortedTableIteratorFactory(comp Comparable) *sortedTableIteratorFactory {
-	return &sortedTableIteratorFactory{comp: comp}
+func NewSortedTableIteratorFactory(less Less) *sortedTableIteratorFactory {
+	return &sortedTableIteratorFactory{less: less}
 }

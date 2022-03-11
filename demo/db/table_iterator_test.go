@@ -1,9 +1,12 @@
 package db
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestRandomTableIterator(t *testing.T) {
-	table := NewTable("testRegion", NewRandomTableIteratorFactory())
+	table := NewTable("testRegion").WithType(reflect.TypeOf(new(testRegion)))
 	table.Insert(1, &testRegion{Id: 1, Name: "beijing"})
 	table.Insert(2, &testRegion{Id: 2, Name: "shanghai"})
 	table.Insert(3, &testRegion{Id: 3, Name: "guangdong"})
@@ -19,8 +22,21 @@ func TestRandomTableIterator(t *testing.T) {
 	}
 }
 
+func regionIdLess(i, j interface{}) bool {
+	id1, ok := i.(int)
+	if !ok {
+		return false
+	}
+	id2, ok := j.(int)
+	if !ok {
+		return false
+	}
+	return id1 < id2
+}
+
 func TestSortTableIterator(t *testing.T) {
-	table := NewTable("testRegion", NewRandomTableIteratorFactory())
+	table := NewTable("testRegion").WithType(reflect.TypeOf(new(testRegion))).
+		WithTableIteratorFactory(NewSortedTableIteratorFactory(regionIdLess))
 	table.Insert(3, &testRegion{Id: 3, Name: "beijing"})
 	table.Insert(1, &testRegion{Id: 1, Name: "shanghai"})
 	table.Insert(2, &testRegion{Id: 2, Name: "guangdong"})
