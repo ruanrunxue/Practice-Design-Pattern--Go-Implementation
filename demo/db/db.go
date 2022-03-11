@@ -11,4 +11,6 @@ type Db interface {
 	Insert(tableName string, primaryKey interface{}, record interface{}) error
 	Update(tableName string, primaryKey interface{}, record interface{}) error
 	Delete(tableName string, primaryKey interface{}) error
+
+	CreateTransaction(name string) *Transaction
 }

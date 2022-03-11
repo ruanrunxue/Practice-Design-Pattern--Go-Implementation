@@ -74,3 +74,7 @@ func (m *MemoryDb) Delete(tableName string, primaryKey interface{}) error {
 	}
 	return table.(*Table).Delete(primaryKey)
 }
+
+func (m *MemoryDb) CreateTransaction(name string) *Transaction {
+	return NewTransaction(name, m)
+}
