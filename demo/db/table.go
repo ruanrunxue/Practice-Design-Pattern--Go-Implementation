@@ -1,6 +1,9 @@
 package db
 
-import "reflect"
+import (
+	"reflect"
+	"strings"
+)
 
 // Table 数据表定义
 type Table struct {
@@ -29,7 +32,7 @@ func (t *Table) WithTableIteratorFactory(iteratorFactory TableIteratorFactory) *
 }
 
 func (t *Table) Name() string {
-	return t.name
+	return strings.ToLower(t.name)
 }
 
 func (t *Table) QueryByPrimaryKey(key interface{}, value interface{}) error {

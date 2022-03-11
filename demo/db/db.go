@@ -13,4 +13,6 @@ type Db interface {
 	Delete(tableName string, primaryKey interface{}) error
 
 	CreateTransaction(name string) *Transaction
+
+	ExecDsl(dsl string) (*DslResult, error)
 }

@@ -9,4 +9,5 @@ var (
 	ErrTableNotExist       = errors.New("table not exist")
 	ErrTableAlreadyExist   = errors.New("table already exist")
 	ErrTransactionNotBegin = errors.New("transaction not begin")
+	ErrDslInvalidGrammar   = errors.New("dsl expression invalid grammar")
 )

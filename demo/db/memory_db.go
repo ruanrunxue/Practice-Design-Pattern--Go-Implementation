@@ -1,6 +1,9 @@
 package db
 
-import "sync"
+import (
+	"strings"
+	"sync"
+)
 
 // MemoryDb 内存数据库
 type MemoryDb struct {
@@ -77,4 +80,28 @@ func (m *MemoryDb) Delete(tableName string, primaryKey interface{}) error {
 
 func (m *MemoryDb) CreateTransaction(name string) *Transaction {
 	return NewTransaction(name, m)
+}
+
+func (m *MemoryDb) ExecDsl(dsl string) (*DslResult, error) {
+	ctx := NewDslContext()
+	express := &CompoundExpression{dsl: dsl}
+	if err := express.Interpret(ctx); err != nil {
+		return nil, ErrDslInvalidGrammar
+	}
+	table, ok := m.tables.Load(ctx.TableName())
+	if !ok {
+		return nil, ErrTableNotExist
+	}
+	record, ok := table.(*Table).records[ctx.PrimaryKey()]
+	if !ok {
+		return nil, ErrRecordNotFound
+	}
+	result := NewDslResult()
+	for _, f := range ctx.Fields() {
+		field := strings.ToLower(f)
+		if idx, ok := record.fields[field]; ok {
+			result.Add(field, record.values[idx])
+		}
+	}
+	return result, nil
 }
