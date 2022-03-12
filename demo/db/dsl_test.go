@@ -2,11 +2,12 @@ package db
 
 import (
 	"reflect"
+	"sync"
 	"testing"
 )
 
 func TestDsl(t *testing.T) {
-	db := NewMemoryDb()
+	db := &memoryDb{tables: sync.Map{}}
 	table := NewTable("region").
 		WithType(reflect.TypeOf(new(testRegion))).
 		WithTableIteratorFactory(NewRandomTableIteratorFactory())

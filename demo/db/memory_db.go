@@ -5,16 +5,18 @@ import (
 	"sync"
 )
 
-// MemoryDb 内存数据库
-type MemoryDb struct {
+var memoryDbInstance = &memoryDb{tables: sync.Map{}}
+
+// memoryDb 内存数据库
+type memoryDb struct {
 	tables sync.Map // key为tableName，value为table
 }
 
-func NewMemoryDb() *MemoryDb {
-	return &MemoryDb{tables: sync.Map{}}
+func MemoryDbInstance() *memoryDb {
+	return memoryDbInstance
 }
 
-func (m *MemoryDb) CreateTable(t *Table) error {
+func (m *memoryDb) CreateTable(t *Table) error {
 	if _, ok := m.tables.Load(t.Name()); ok {
 		return ErrTableAlreadyExist
 	}
@@ -22,7 +24,7 @@ func (m *MemoryDb) CreateTable(t *Table) error {
 	return nil
 }
 
-func (m *MemoryDb) CreateTableIfNotExist(t *Table) error {
+func (m *memoryDb) CreateTableIfNotExist(t *Table) error {
 	if _, ok := m.tables.Load(t.Name()); ok {
 		return nil
 	}
@@ -30,7 +32,7 @@ func (m *MemoryDb) CreateTableIfNotExist(t *Table) error {
 	return nil
 }
 
-func (m *MemoryDb) DeleteTable(tableName string) error {
+func (m *memoryDb) DeleteTable(tableName string) error {
 	if _, ok := m.tables.Load(tableName); !ok {
 		return ErrTableNotExist
 	}
@@ -38,7 +40,7 @@ func (m *MemoryDb) DeleteTable(tableName string) error {
 	return nil
 }
 
-func (m *MemoryDb) Query(tableName string, primaryKey interface{}, result interface{}) error {
+func (m *memoryDb) Query(tableName string, primaryKey interface{}, result interface{}) error {
 	table, ok := m.tables.Load(tableName)
 	if !ok {
 		return ErrTableNotExist
@@ -46,7 +48,7 @@ func (m *MemoryDb) Query(tableName string, primaryKey interface{}, result interf
 	return table.(*Table).QueryByPrimaryKey(primaryKey, result)
 }
 
-func (m *MemoryDb) QueryByVisitor(tableName string, visitor TableVisitor) ([]interface{}, error) {
+func (m *memoryDb) QueryByVisitor(tableName string, visitor TableVisitor) ([]interface{}, error) {
 	table, ok := m.tables.Load(tableName)
 	if !ok {
 		return nil, ErrTableNotExist
@@ -54,7 +56,7 @@ func (m *MemoryDb) QueryByVisitor(tableName string, visitor TableVisitor) ([]int
 	return table.(*Table).Accept(visitor)
 }
 
-func (m *MemoryDb) Insert(tableName string, primaryKey interface{}, record interface{}) error {
+func (m *memoryDb) Insert(tableName string, primaryKey interface{}, record interface{}) error {
 	table, ok := m.tables.Load(tableName)
 	if !ok {
 		return ErrTableNotExist
@@ -62,7 +64,7 @@ func (m *MemoryDb) Insert(tableName string, primaryKey interface{}, record inter
 	return table.(*Table).Insert(primaryKey, record)
 }
 
-func (m *MemoryDb) Update(tableName string, primaryKey interface{}, record interface{}) error {
+func (m *memoryDb) Update(tableName string, primaryKey interface{}, record interface{}) error {
 	table, ok := m.tables.Load(tableName)
 	if !ok {
 		return ErrTableNotExist
@@ -70,7 +72,7 @@ func (m *MemoryDb) Update(tableName string, primaryKey interface{}, record inter
 	return table.(*Table).Update(primaryKey, record)
 }
 
-func (m *MemoryDb) Delete(tableName string, primaryKey interface{}) error {
+func (m *memoryDb) Delete(tableName string, primaryKey interface{}) error {
 	table, ok := m.tables.Load(tableName)
 	if !ok {
 		return ErrTableNotExist
@@ -78,11 +80,11 @@ func (m *MemoryDb) Delete(tableName string, primaryKey interface{}) error {
 	return table.(*Table).Delete(primaryKey)
 }
 
-func (m *MemoryDb) CreateTransaction(name string) *Transaction {
+func (m *memoryDb) CreateTransaction(name string) *Transaction {
 	return NewTransaction(name, m)
 }
 
-func (m *MemoryDb) ExecDsl(dsl string) (*DslResult, error) {
+func (m *memoryDb) ExecDsl(dsl string) (*DslResult, error) {
 	ctx := NewDslContext()
 	express := &CompoundExpression{dsl: dsl}
 	if err := express.Interpret(ctx); err != nil {

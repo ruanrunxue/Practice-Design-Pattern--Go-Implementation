@@ -2,11 +2,12 @@ package db
 
 import (
 	"reflect"
+	"sync"
 	"testing"
 )
 
 func TestTransaction_Success(t *testing.T) {
-	db := NewMemoryDb()
+	db := &memoryDb{tables: sync.Map{}}
 	db.CreateTable(NewTable("region1").
 		WithType(reflect.TypeOf(new(testRegion))).
 		WithTableIteratorFactory(NewRandomTableIteratorFactory()))
@@ -40,7 +41,7 @@ func TestTransaction_Success(t *testing.T) {
 }
 
 func TestTransaction_Failed(t *testing.T) {
-	db := NewMemoryDb()
+	db := &memoryDb{tables: sync.Map{}}
 	db.CreateTable(NewTable("region1").
 		WithType(reflect.TypeOf(new(testRegion))).
 		WithTableIteratorFactory(NewRandomTableIteratorFactory()))

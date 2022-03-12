@@ -2,11 +2,12 @@ package db
 
 import (
 	"reflect"
+	"sync"
 	"testing"
 )
 
 func TestCacheProxy(t *testing.T) {
-	cache := NewCacheProxy(NewMemoryDb())
+	cache := NewCacheProxy(&memoryDb{tables: sync.Map{}})
 	table := NewTable("region").
 		WithType(reflect.TypeOf(new(testRegion))).
 		WithTableIteratorFactory(NewRandomTableIteratorFactory())
