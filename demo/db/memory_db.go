@@ -107,3 +107,7 @@ func (m *memoryDb) ExecDsl(dsl string) (*DslResult, error) {
 	}
 	return result, nil
 }
+
+func (m *memoryDb) Clear() {
+	m.tables = sync.Map{}
+}

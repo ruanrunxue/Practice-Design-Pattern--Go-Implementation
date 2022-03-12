@@ -1,0 +1,17 @@
+name: pipeline_0
+type: simple
+input:
+  name: input_0
+  type: memory_mq
+  context:
+    topic: access_log.topic
+filters:
+  - name: filter_0
+    type: extract_log
+  - name: filter_1
+    type: add_timestamp
+output:
+  name: output_0
+  type: memory_db
+  context:
+    tableName: monitor_record_0

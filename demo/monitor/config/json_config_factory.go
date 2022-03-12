@@ -32,7 +32,7 @@ func (j JsonFactory) CreateOutputConfig() Output {
 	return Output{loadConf: loadJson}
 }
 
-// CreatePipelineConfig 例子 {"name":"pipline1", "type":"single_thread", "input":{...}, "filter":{...}, "output":{...}}
+// CreatePipelineConfig 例子 {"name":"pipline1", "type":"simple", "input":{...}, "filter":{...}, "output":{...}}
 func (j JsonFactory) CreatePipelineConfig() Pipeline {
 	pipeline := Pipeline{}
 	pipeline.loadConf = loadJson

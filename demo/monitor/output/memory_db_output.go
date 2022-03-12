@@ -4,7 +4,7 @@ import (
 	"demo/db"
 	"demo/monitor/plugin"
 	"demo/monitor/record"
-	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -31,7 +31,7 @@ func (m *MemoryDbOutput) SetContext(ctx plugin.Context) {
 func (m *MemoryDbOutput) Output(event *plugin.Event) error {
 	r, ok := event.Payload().(*record.MonitorRecord)
 	if !ok {
-		return errors.New("memory db output unknown event type")
+		return fmt.Errorf("memory db output unknown event type %T", event.Payload())
 	}
 	return m.db.Insert(m.tableName, r.Id, r)
 }

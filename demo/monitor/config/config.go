@@ -4,6 +4,13 @@ import (
 	"demo/monitor/plugin"
 )
 
+type Type uint8
+
+const (
+	JsonType Type = iota
+	YamlType
+)
+
 type item struct {
 	Name       string         `json:"name" yaml:"name"`
 	PluginType string         `json:"type" yaml:"type"`
