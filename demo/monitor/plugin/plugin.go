@@ -7,7 +7,7 @@ type Plugin interface {
 	// Uninstall 卸载插件，卸载后停止运行
 	Uninstall()
 	// SetContext 插件上下文设置
-	SetContext(ctx *Context)
+	SetContext(ctx Context)
 }
 
 // Event 插件间通信事件
