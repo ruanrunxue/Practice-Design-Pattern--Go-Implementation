@@ -5,7 +5,6 @@ import (
 	"demo/monitor/plugin"
 	"demo/monitor/record"
 	"testing"
-	"time"
 )
 
 func TestMemoryDbOutput(t *testing.T) {
@@ -26,14 +25,15 @@ func TestMemoryDbOutput(t *testing.T) {
 	}
 
 	mo.Install()
-	mrecord := record.NewMonitoryRecord("service1", record.RecvResp, time.Now().Unix())
+	mrecord := record.NewMonitoryRecord()
+	mrecord.Endpoint = "service1"
 	event := plugin.NewEvent(mrecord)
 	mo.Output(event)
 
 	result := new(record.MonitorRecord)
 	mo.db.Query(mo.tableName, 1, result)
-	if result.ServiceId != "service1" {
-		t.Errorf("want service1 got %s", result.ServiceId)
+	if result.Endpoint != "service1" {
+		t.Errorf("want service1 got %s", result.Endpoint)
 	}
 	mo.db.DeleteTable(mo.tableName)
 	mo.Uninstall()
