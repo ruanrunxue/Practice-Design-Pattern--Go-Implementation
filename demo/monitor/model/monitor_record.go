@@ -1,4 +1,4 @@
-package record
+package model
 
 import "sync/atomic"
 

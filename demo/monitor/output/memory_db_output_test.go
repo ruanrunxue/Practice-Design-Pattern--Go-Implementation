@@ -2,8 +2,8 @@ package output
 
 import (
 	"demo/monitor/config"
+	"demo/monitor/model"
 	"demo/monitor/plugin"
-	"demo/monitor/record"
 	"testing"
 )
 
@@ -25,12 +25,12 @@ func TestMemoryDbOutput(t *testing.T) {
 	}
 
 	mo.Install()
-	mrecord := record.NewMonitoryRecord()
+	mrecord := model.NewMonitoryRecord()
 	mrecord.Endpoint = "service1"
 	event := plugin.NewEvent(mrecord)
 	mo.Output(event)
 
-	result := new(record.MonitorRecord)
+	result := new(model.MonitorRecord)
 	mo.db.Query(mo.tableName, 1, result)
 	if result.Endpoint != "service1" {
 		t.Errorf("want service1 got %s", result.Endpoint)

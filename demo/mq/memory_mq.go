@@ -37,7 +37,7 @@ func (m *memoryMq) Consume(topic Topic) (*Message, error) {
 	}
 	queue, ok := record.(chan *Message)
 	if !ok {
-		return nil, errors.New("record's type is not chan *Message")
+		return nil, errors.New("model's type is not chan *Message")
 	}
 	return <-queue, nil
 }
@@ -51,7 +51,7 @@ func (m *memoryMq) Produce(message *Message) error {
 	}
 	queue, ok := record.(chan *Message)
 	if !ok {
-		return errors.New("record's type is not chan *Message")
+		return errors.New("model's type is not chan *Message")
 	}
 	queue <- message
 	return nil

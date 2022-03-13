@@ -1,14 +1,14 @@
 package filter
 
 import (
+	"demo/monitor/model"
 	"demo/monitor/plugin"
-	"demo/monitor/record"
 	"regexp"
 )
 
-// ExtractLogFilter 从日志中提 endpoint 和 record type
+// ExtractLogFilter 从日志中提 endpoint 和 model type
 // 举例[192.168.1.1:8088][recv_req]receive request from address 192.168.1.91:80 success
-// 则endpoint为192.168.1.1:8088，record type为recv_req
+// 则endpoint为192.168.1.1:8088，model type为recv_req
 type ExtractLogFilter struct {
 	pattern *regexp.Regexp
 }
@@ -32,9 +32,9 @@ func (e *ExtractLogFilter) Filter(event *plugin.Event) *plugin.Event {
 	if len(matches) != 3 {
 		return event
 	}
-	re := record.NewMonitoryRecord()
+	re := model.NewMonitoryRecord()
 	re.Endpoint = matches[1]
-	re.Type = record.Type(matches[2])
+	re.Type = model.Type(matches[2])
 	ev := plugin.NewEvent(re)
 	return ev
 }

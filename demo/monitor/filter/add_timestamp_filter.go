@@ -1,8 +1,8 @@
 package filter
 
 import (
+	"demo/monitor/model"
 	"demo/monitor/plugin"
-	"demo/monitor/record"
 	"time"
 )
 
@@ -20,7 +20,7 @@ func (a *AddTimestampFilter) SetContext(ctx plugin.Context) {
 }
 
 func (a *AddTimestampFilter) Filter(event *plugin.Event) *plugin.Event {
-	re, ok := event.Payload().(*record.MonitorRecord)
+	re, ok := event.Payload().(*model.MonitorRecord)
 	if !ok {
 		return event
 	}

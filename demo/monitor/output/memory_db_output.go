@@ -2,8 +2,8 @@ package output
 
 import (
 	"demo/db"
+	"demo/monitor/model"
 	"demo/monitor/plugin"
-	"demo/monitor/record"
 	"fmt"
 	"reflect"
 )
@@ -15,7 +15,7 @@ type MemoryDbOutput struct {
 
 func (m *MemoryDbOutput) Install() {
 	m.db = db.MemoryDbInstance()
-	table := db.NewTable(m.tableName).WithType(reflect.TypeOf(new(record.MonitorRecord)))
+	table := db.NewTable(m.tableName).WithType(reflect.TypeOf(new(model.MonitorRecord)))
 	m.db.CreateTableIfNotExist(table)
 }
 
@@ -29,7 +29,7 @@ func (m *MemoryDbOutput) SetContext(ctx plugin.Context) {
 }
 
 func (m *MemoryDbOutput) Output(event *plugin.Event) error {
-	r, ok := event.Payload().(*record.MonitorRecord)
+	r, ok := event.Payload().(*model.MonitorRecord)
 	if !ok {
 		return fmt.Errorf("memory db output unknown event type %T", event.Payload())
 	}

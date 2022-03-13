@@ -2,8 +2,8 @@ package filter
 
 import (
 	"demo/monitor/config"
+	"demo/monitor/model"
 	"demo/monitor/plugin"
-	"demo/monitor/record"
 	"testing"
 )
 
@@ -21,9 +21,9 @@ func TestExtractLogFilter(t *testing.T) {
 	log := "[192.168.1.1:8088][recv_req]receive request from address 192.168.1.91:80 success"
 	event := plugin.NewEvent(log)
 	event = filterPlugin.Filter(event)
-	re, ok := event.Payload().(*record.MonitorRecord)
+	re, ok := event.Payload().(*model.MonitorRecord)
 	if !ok {
-		t.Errorf("want *record.MonitorRecord got %T", event.Payload())
+		t.Errorf("want *model.MonitorRecord got %T", event.Payload())
 	}
 	if re.Endpoint != "192.168.1.1:8088" || re.Type != "recv_req" {
 		t.Errorf("want 192.168.1.1:8088 got %s, want recv_req got %s", re.Endpoint, re.Type)

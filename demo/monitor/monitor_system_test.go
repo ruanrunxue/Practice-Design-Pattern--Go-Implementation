@@ -3,7 +3,7 @@ package monitor
 import (
 	"demo/db"
 	"demo/monitor/config"
-	"demo/monitor/record"
+	"demo/monitor/model"
 	"demo/mq"
 	"testing"
 	"time"
@@ -22,7 +22,7 @@ func TestMonitorSystem(t *testing.T) {
 	msg := mq.NewMessage("access_log.topic", log)
 	mq.MemoryMqInstance().Produce(msg)
 	time.Sleep(100 * time.Millisecond)
-	result := new(record.MonitorRecord)
+	result := new(model.MonitorRecord)
 	db.MemoryDbInstance().Query("monitor_record_0", 1, result)
 	if result.Endpoint != "192.168.1.1:8088" {
 		t.Errorf("want 192.168.1.1:8088 got %s", result.Endpoint)
