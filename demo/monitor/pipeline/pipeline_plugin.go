@@ -11,6 +11,18 @@ import (
 	"sync/atomic"
 )
 
+/**
+ * 里氏替换原则（LSP）：子类型必须能够替换掉它们的基类型，也即基类中的所有性质，在子类中仍能成立。
+ * 设计出符合LSP的软件的要点就是，根据该软件的使用者行为作出的合理假设，以此来审视它是否具备有效性和正确性。
+ * 要想设计出符合LSP的模型所需要遵循的一些约束：
+ * 1、基类应该设计为一个抽象类（不能直接实例化，只能被继承）。
+ * 2、子类应该实现基类的抽象接口，而不是重写基类已经实现的具体方法。
+ * 3、子类可以新增功能，但不能改变基类的功能。
+ * 4、子类不能新增约束，包括抛出基类没有声明的异常。
+ * 例子：
+ * pipeline.NewPlugin中的入参没有使用plugin.Config作为入参类型，符合LSP。否则就需要转型，破坏了LSP
+ */
+
 /*
 桥接模式
 */
@@ -20,9 +32,17 @@ import (
 type Plugin interface {
 	plugin.Plugin
 	SetInput(input input.Plugin)
-	SetFilters(filters []filter.Plugin)
+	SetFilter(filter filter.Plugin)
 	SetOutput(output output.Plugin)
 }
+
+/*
+ * 开闭原则（OCP）：一个软件系统应该具备良好的可扩展性，新增功能应当通过扩展的方式实现，而不是在已有的代码基础上修改
+ * 根据具体的业务场景识别出那些最有可能变化的点，然后分离出去，抽象成稳定的接口。
+ * 后续新增功能时，通过扩展接口，而不是修改已有代码实现
+ * 例子：
+ * pipeline.Plugin将输入、过滤、输出三个独立变化点，分离到三个接口input.Plugin、filter.Plugin、output.Plugin上，符合OCP
+ */
 
 // NewPlugin Pipeline工厂方法
 func NewPlugin(config config.Pipeline) (Plugin, error) {
@@ -48,7 +68,8 @@ func NewPlugin(config config.Pipeline) (Plugin, error) {
 		}
 		filterPlugins = append(filterPlugins, filterPlugin)
 	}
-	pipelinePlugin.MethodByName("SetFilters").Call([]reflect.Value{reflect.ValueOf(filterPlugins)})
+	filterChain := filter.NewChain(filterPlugins)
+	pipelinePlugin.MethodByName("SetFilter").Call([]reflect.Value{reflect.ValueOf(filterChain)})
 	// 设置output插件
 	outputPlugin, err := output.NewPlugin(config.Output)
 	if err != nil {
@@ -61,7 +82,7 @@ func NewPlugin(config config.Pipeline) (Plugin, error) {
 
 type pipelineTemplate struct {
 	input   input.Plugin
-	filters []filter.Plugin
+	filter  filter.Plugin
 	output  output.Plugin
 	isClose uint32
 	run     func()
@@ -69,18 +90,14 @@ type pipelineTemplate struct {
 
 func (p *pipelineTemplate) Install() {
 	p.output.Install()
-	for _, f := range p.filters {
-		f.Install()
-	}
+	p.filter.Install()
 	p.input.Install()
 	p.run()
 }
 
 func (p *pipelineTemplate) Uninstall() {
 	p.input.Uninstall()
-	for _, f := range p.filters {
-		f.Install()
-	}
+	p.filter.Uninstall()
 	p.output.Uninstall()
 	atomic.StoreUint32(&p.isClose, 1)
 }
@@ -89,8 +106,8 @@ func (p *pipelineTemplate) SetInput(input input.Plugin) {
 	p.input = input
 }
 
-func (p *pipelineTemplate) SetFilters(filters []filter.Plugin) {
-	p.filters = filters
+func (p *pipelineTemplate) SetFilter(filter filter.Plugin) {
+	p.filter = filter
 }
 
 func (p *pipelineTemplate) SetOutput(output output.Plugin) {
@@ -105,9 +122,7 @@ func (p *pipelineTemplate) doRun() {
 			atomic.StoreUint32(&p.isClose, 1)
 			break
 		}
-		for _, f := range p.filters {
-			event = f.Filter(event)
-		}
+		event = p.filter.Filter(event)
 		if err = p.output.Output(event); err != nil {
 			fmt.Printf("pipeline output err %s\n", err.Error())
 			atomic.StoreUint32(&p.isClose, 1)

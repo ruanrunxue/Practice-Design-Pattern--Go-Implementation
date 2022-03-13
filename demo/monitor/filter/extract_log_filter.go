@@ -13,7 +13,6 @@ type ExtractLogFilter struct {
 	pattern *regexp.Regexp
 }
 
-// [(.+)][(.+)].*
 func (e *ExtractLogFilter) Install() {
 	e.pattern = regexp.MustCompile(`\[(.+)]\[(.+)].*`)
 }
