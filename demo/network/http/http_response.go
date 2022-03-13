@@ -83,3 +83,8 @@ func (r *Response) Body() interface{} {
 func (r *Response) ProblemDetails() string {
 	return r.problemDetails
 }
+
+// IsSuccess 如果status code为2xx，返回true，否则，返回false
+func (r *Response) IsSuccess() bool {
+	return r.StatusCode().Code/100 == 2
+}
