@@ -11,7 +11,7 @@ type Command interface {
 	// Undo 回滚命令
 	Undo()
 	// SetDb 设置关联的数据库
-	SetDb(db Db)
+	setDb(db Db)
 }
 
 // Transaction Db事务实现，事务接口的调用顺序为begin -> exec -> exec > ... -> commit
@@ -39,7 +39,7 @@ func (t *Transaction) Exec(cmd Command) error {
 	if t.cmds == nil {
 		return ErrTransactionNotBegin
 	}
-	cmd.SetDb(t.db)
+	cmd.setDb(t.db)
 	t.cmds = append(t.cmds, cmd)
 	return nil
 }
@@ -102,7 +102,7 @@ func (i *InsertCmd) Undo() {
 	i.db.Delete(i.tableName, i.primaryKey)
 }
 
-func (i *InsertCmd) SetDb(db Db) {
+func (i *InsertCmd) setDb(db Db) {
 	i.db = db
 }
 
@@ -140,7 +140,7 @@ func (u *UpdateCmd) Undo() {
 	u.db.Update(u.tableName, u.primaryKey, u.oldRecord)
 }
 
-func (u *UpdateCmd) SetDb(db Db) {
+func (u *UpdateCmd) setDb(db Db) {
 	u.db = db
 }
 
@@ -169,6 +169,6 @@ func (d *DeleteCmd) Undo() {
 	d.db.Insert(d.tableName, d.primaryKey, d.oldRecord)
 }
 
-func (d *DeleteCmd) SetDb(db Db) {
+func (d *DeleteCmd) setDb(db Db) {
 	d.db = db
 }

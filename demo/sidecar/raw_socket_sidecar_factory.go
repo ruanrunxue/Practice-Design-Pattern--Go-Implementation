@@ -8,6 +8,10 @@ import (
 type RawSocketFactory struct {
 }
 
+func NewRawSocketFactory() *RawSocketFactory {
+	return &RawSocketFactory{}
+}
+
 func (r RawSocketFactory) Create() network.Socket {
 	return network.DefaultSocket()
 }
