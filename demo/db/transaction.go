@@ -57,6 +57,10 @@ func (t *Transaction) Commit() error {
 	return nil
 }
 
+/*
+备忘录模式
+*/
+
 // cmdHistory 命令执行历史
 type cmdHistory struct {
 	history []Command
