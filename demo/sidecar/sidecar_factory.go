@@ -3,7 +3,7 @@ package sidecar
 import "demo/network"
 
 /*
-工厂模式
+工厂方法模式
 */
 
 // Factory Sidecar工厂接口
