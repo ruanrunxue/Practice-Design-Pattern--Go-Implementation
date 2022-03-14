@@ -21,7 +21,7 @@
 |            |          外观模式（Facade）           | [shopping.Center](demo/service/shopping/shopping_center.go)  |                                                              |
 |            |         享元模式（Flyweight）         |    [model.Region](demo/service/registry/model/region.go)     |                                                              |
 |            |           代理模式（Proxy）           |              [db.CacheProxy](demo/db/cache.go)               |                                                              |
-| 行为模式   | 责任链模式（Chain Of Responsibility） |     [filter.Chain](demo/monitor/filter/filter_chain.go)      |                                                              |
+| 行为型模式 | 责任链模式（Chain Of Responsibility） |     [filter.Chain](demo/monitor/filter/filter_chain.go)      |                                                              |
 |            |          命令模式（Command）          |             [db.Command](demo/db/transaction.go)             |                                                              |
 |            |        迭代器模式（Iterator）         |        [db.TableIterator](demo/db/table_iterator.go)         |                                                              |
 |            |        中介者模式（Mediator）         |    [mediator.Mediator](demo/service/mediator/mediator.go)    |                                                              |
