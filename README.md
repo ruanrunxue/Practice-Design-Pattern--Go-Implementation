@@ -5,11 +5,11 @@
 | 归类       |                 模式                  |                           示例代码                           |                             文章                             |
 | ---------- | :-----------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | SOLID原则  |          单一职责原则（SRP）          |    [registry.Registry](demo/service/registry/registry.go)    | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_ractice_design_pattern__solid_principle.md) |
-|            |            开闭原则（OCP）            | [pipeline.Plugin](demo/monitor/pipeline/pipeline_plugin.go)  | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_ractice_design_pattern__solid_principle.md) |
-|            |          里氏替换原则（LSP）          | [pipeline.NewPlugin](demo/monitor/pipeline/pipeline_plugin.go) | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_ractice_design_pattern__solid_principle.md) |
-|            |          接口隔离原则（ISP）          |                    [mq.Mq](demo/mq/mq.go)                    | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_ractice_design_pattern__solid_principle.md) |
-|            |          依赖倒置原则（DIP）          |                    [db.Db](demo/db/db.go)                    | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_ractice_design_pattern__solid_principle.md) |
-| 创建型模式 |         单例模式（Singleton）         |          [network.network](demo/network/network.go)          |                                                              |
+|            |            开闭原则（OCP）            | [pipeline.Plugin](demo/monitor/pipeline/pipeline_plugin.go)  |                                                              |
+|            |          里氏替换原则（LSP）          | [pipeline.NewPlugin](demo/monitor/pipeline/pipeline_plugin.go) |                                                              |
+|            |          接口隔离原则（ISP）          |                    [mq.Mq](demo/mq/mq.go)                    |                                                              |
+|            |          依赖倒置原则（DIP）          |                    [db.Db](demo/db/db.go)                    |                                                              |
+| 创建型模式 |         单例模式（Singleton）         |          [network.network](demo/network/network.go)          | [【Go实现】实践GoF的23种设计模式: 单例模式](docs/go_ractice_design_pattern__singleton.md) |
 |            |         建造者模式（Builder）         | [model.serviceProfileBuild](demo/service/registry/model/service_profile.go) |                                                              |
 |            |    工厂方法模式（Factory Method）     |      [sidecar.Factory](demo/sidecar/sidecar_factory.go)      |                                                              |
 |            |   抽象工厂模式（Abstract Factory）    |   [config.Factory](demo/monitor/config/config_factory.go)    |                                                              |
