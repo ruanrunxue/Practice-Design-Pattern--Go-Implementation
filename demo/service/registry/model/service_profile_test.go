@@ -29,3 +29,15 @@ func TestServiceProfile(t *testing.T) {
 		t.Errorf("want %+v, got %+v", got, profile)
 	}
 }
+
+func TestNewServiceProfile(t *testing.T) {
+	profile := NewServiceProfile("svc1", "svc",
+		Status(Normal),
+		Endpoint("192.168.10.10", 80),
+		SvcRegion("region2", "guangdong", "China"),
+		Priority(2),
+		Load(300))
+	if profile.Priority != 2 {
+		t.Errorf("want 2, got %d", profile.Priority)
+	}
+}
