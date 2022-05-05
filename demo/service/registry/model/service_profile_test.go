@@ -41,3 +41,18 @@ func TestNewServiceProfile(t *testing.T) {
 		t.Errorf("want 2, got %d", profile.Priority)
 	}
 }
+
+func TestNewFluentServiceProfileBuilder(t *testing.T) {
+	profile := NewFluentServiceProfileBuilder().
+		WithId("service1").
+		WithType("order").
+		WithStatus(Normal).
+		WithEndpoint("192.168.0.1", 8080).
+		WithRegion("region1", "beijing", "China").
+		WithPriority(1).
+		WithLoad(100).
+		Build()
+	if profile.Priority != 1 {
+		t.Errorf("want 1, got %d", profile.Priority)
+	}
+}
