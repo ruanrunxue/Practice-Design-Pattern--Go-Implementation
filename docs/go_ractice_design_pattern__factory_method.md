@@ -55,7 +55,7 @@ func (s *ServiceMediator) Forward(req *http.Request) *http.Response {
 }
 ```
 
-在上述实现中，我们在调用 `http.NewClient` 时把 `sidecar.NewFlowCtrlSidecar(network.DefaultSocket())` 硬编码进去了，那么如果以后要扩展 `Sidecar` ，就得修改这段代码逻辑，这违法了[开闭原则 OCP](https://mp.weixin.qq.com/s/s3aD4mK2Aw4v99tbCIe9HA)。
+在上述实现中，我们在调用 `http.NewClient` 时把 `sidecar.NewFlowCtrlSidecar(network.DefaultSocket())` 硬编码进去了，那么如果以后要扩展 `Sidecar` ，就得修改这段代码逻辑，这违反了[开闭原则 OCP](https://mp.weixin.qq.com/s/s3aD4mK2Aw4v99tbCIe9HA)。
 
 有经验的同学可能会想到，可以通过让 `ServiceMediator` 依赖 `Socket` 接口，在 `Forward` 方法调用 `http.NewClient` 时把 `Socket` 接口作为入参；然后在 `ServiceMediator`  初始化时，将具体类型的 `Sidecar` 注入到 `ServiceMediator` 中：
 
