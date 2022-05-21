@@ -11,7 +11,7 @@
 |            |          依赖倒置原则（DIP）          |                    [db.Db](demo/db/db.go)                    |                                                              |
 | 创建型模式 |         单例模式（Singleton）         |          [network.network](demo/network/network.go)          | [【Go实现】实践GoF的23种设计模式: 单例模式](docs/go_ractice_design_pattern__singleton.md) |
 |            |         建造者模式（Builder）         | [model.serviceProfileBuild](demo/service/registry/model/service_profile.go) | [【Go实现】实践GoF的23种设计模式: 建造者模式](docs/go_ractice_design_pattern__builder.md) |
-|            |    工厂方法模式（Factory Method）     |      [sidecar.Factory](demo/sidecar/sidecar_factory.go)      |                                                              |
+|            |    工厂方法模式（Factory Method）     |      [sidecar.Factory](demo/sidecar/sidecar_factory.go)      | [【Go实现】实践GoF的23种设计模式: 工厂方法模式](docs/go_ractice_design_pattern__factory_method.md) |
 |            |   抽象工厂模式（Abstract Factory）    |   [config.Factory](demo/monitor/config/config_factory.go)    |                                                              |
 |            |         原型模式（Prototype）         | [model.Cloneable](demo/service/registry/model/cloneable.go)  |                                                              |
 | 结构型模式 |         适配器模式（Adapter）         |             [db.TableRender](demo/db/console.go)             |                                                              |
