@@ -1,17 +1,17 @@
-name: pipeline_0
-type: simple
-input:
-  name: input_0
-  type: memory_mq
-  context:
-    topic: access_log.topic
-filters:
-  - name: filter_0
-    type: extract_log
+name: pipeline_0 # pipeline名称
+type: simple # pipeline类型
+input: # input插件定义
+  name: input_0 # input插件名称
+  type: memory_mq # input插件类型，这里使用的是MemoryMQ作为输入
+  context: # input插件的配置上下文
+    topic: access_log.topic # 这里配置的是订阅的MemoryMQ主题
+filters: # filter插件链定义，多个filter插件组成一个filters插件链
+  - name: filter_0 # filter插件名称
+    type: extract_log # filter插件类型
   - name: filter_1
     type: add_timestamp
-output:
-  name: output_0
-  type: memory_db
-  context:
-    tableName: monitor_record_0
+output: # output插件定义
+  name: output_0 # output插件名称
+  type: memory_db # output插件类型，这里使用的是MemoryDB作为输出
+  context: # output插件上下文
+    tableName: monitor_record_0 # 这里配置的是MemoryDB表名

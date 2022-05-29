@@ -4,31 +4,23 @@ import (
 	"demo/monitor/config"
 	"demo/monitor/pipeline"
 	"demo/monitor/plugin"
-	"errors"
 	"fmt"
 )
 
 type System struct {
-	plugins map[string]plugin.Plugin
+	plugins       map[string]plugin.Plugin
+	configFactory config.Factory
 }
 
-func NewSystem() *System {
+func NewSystem(configFactory config.Factory) *System {
 	return &System{
-		plugins: make(map[string]plugin.Plugin),
+		plugins:       make(map[string]plugin.Plugin),
+		configFactory: configFactory,
 	}
 }
 
-func (s *System) LoadConf(conf string, confType config.Type) error {
-	var configFactory config.Factory
-	switch confType {
-	case config.JsonType:
-		configFactory = config.NewJsonFactory()
-	case config.YamlType:
-		configFactory = config.NewYamlFactory()
-	default:
-		return errors.New("unknown config type")
-	}
-	pipelineConf := configFactory.CreatePipelineConfig()
+func (s *System) LoadConf(conf string) error {
+	pipelineConf := s.configFactory.CreatePipelineConfig()
 	if err := pipelineConf.Load(conf); err != nil {
 		return err
 	}

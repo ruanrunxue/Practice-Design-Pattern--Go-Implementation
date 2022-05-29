@@ -10,9 +10,9 @@ import (
 )
 
 func TestMonitorSystem(t *testing.T) {
-	system := NewSystem()
+	system := NewSystem(config.NewYamlFactory())
 	conf := "name: pipeline_0\ntype: simple\ninput:\n  name: input_0\n  type: memory_mq\n  context:\n    topic: access_log.topic\nfilters:\n  - name: filter_0\n    type: extract_log\n  - name: filter_1\n    type: add_timestamp\noutput:\n  name: output_0\n  type: memory_db\n  context:\n    tableName: monitor_record_0"
-	err := system.LoadConf(conf, config.YamlType)
+	err := system.LoadConf(conf)
 	if err != nil {
 		t.Error(err)
 	}

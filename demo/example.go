@@ -18,9 +18,9 @@ func main() {
 	sidecarFactory := sidecar.NewAllInOneFactory(mmq)
 
 	// 启动监控系统
-	monitorSys := monitor.NewSystem()
+	monitorSys := monitor.NewSystem(config.NewYamlFactory())
 	conf, _ := ioutil.ReadFile("monitor_pipeline.yaml")
-	monitorSys.LoadConf(string(conf), config.YamlType)
+	monitorSys.LoadConf(string(conf))
 	monitorSys.Start()
 	defer monitorSys.Shutdown()
 
