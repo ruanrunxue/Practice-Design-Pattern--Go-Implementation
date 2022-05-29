@@ -89,43 +89,43 @@ package config
 
 // 配置基础结构
 type item struct {
-	  Name       string         `json:"name" yaml:"name"`
-	  PluginType string         `json:"type" yaml:"type"`
-	  Ctx        plugin.Context `json:"context" yaml:"context"`
-	  loadConf   func(conf string, item interface{}) error // 封装不同配置文件的加载逻辑，实现多态的关键
+    Name       string         `json:"name" yaml:"name"`
+    PluginType string         `json:"type" yaml:"type"`
+    Ctx        plugin.Context `json:"context" yaml:"context"`
+    loadConf   func(conf string, item interface{}) error // 封装不同配置文件的加载逻辑，实现多态的关键
 }
 
 // Input配置对象
 type Input item
 
 func (i *Input) Load(conf string) error {
-	  return i.loadConf(conf, i)
+    return i.loadConf(conf, i)
 }
 
 // Filter配置对象
 type Filter item
 
 func (f *Filter) Load(conf string) error {
-	  return f.loadConf(conf, f)
+    return f.loadConf(conf, f)
 }
 
 // Output配置对象
 type Output item
 
 func (o *Output) Load(conf string) error {
-	  return o.loadConf(conf, o)
+    return o.loadConf(conf, o)
 }
 
 // Pipeline配置对象
 type Pipeline struct {
-	  item    `yaml:",inline"` // yaml嵌套时需要加上,inline
-	  Input   Input            `json:"input" yaml:"input"`
-	  Filters []Filter         `json:"filters" yaml:"filters,flow"`
-	  Output  Output           `json:"output" yaml:"output"`
+    item    `yaml:",inline"` // yaml嵌套时需要加上,inline
+    Input   Input            `json:"input" yaml:"input"`
+    Filters []Filter         `json:"filters" yaml:"filters,flow"`
+    Output  Output           `json:"output" yaml:"output"`
 }
 
 func (p *Pipeline) Load(conf string) error {
-	  return p.loadConf(conf, p)
+    return p.loadConf(conf, p)
 }
 ```
 
@@ -170,10 +170,10 @@ public class YamlInputConfig extends InputConfig {
 
 // 关键点1: 定义抽象工厂接口，里面定义了产品族中各个产品的工厂方法
 type Factory interface {
-	  CreateInputConfig() Input
-	  CreateFilterConfig() Filter
-	  CreateOutputConfig() Output
-	  CreatePipelineConfig() Pipeline
+    CreateInputConfig() Input
+    CreateFilterConfig() Filter
+    CreateOutputConfig() Output
+    CreatePipelineConfig() Pipeline
 }
 ```
 
@@ -191,29 +191,29 @@ func loadJson(conf string, item interface{}) error {
 type JsonFactory struct {}
 
 func NewJsonFactory() *JsonFactory {
-	  return &JsonFactory{}
+    return &JsonFactory{}
 }
 
 // CreateInputConfig 例子 {"name":"input1", "type":"memory_mq", "context":{"topic":"monitor",...}}
 func (j JsonFactory) CreateInputConfig() Input {
-	  return Input{loadConf: loadJson}
+    return Input{loadConf: loadJson}
 }
 
 // CreateFilterConfig 例子 [{"name":"filter1", "type":"to_json"},{"name":"filter2", "type":"add_timestamp"},...]
 func (j JsonFactory) CreateFilterConfig() Filter {
-	  return Filter{loadConf: loadJson}
+    return Filter{loadConf: loadJson}
 }
 
 // CreateOutputConfig 例子 {"name":"output1", "type":"memory_db", "context":{"tableName":"test",...}}
 func (j JsonFactory) CreateOutputConfig() Output {
-	  return Output{loadConf: loadJson}
+    return Output{loadConf: loadJson}
 }
 
 // CreatePipelineConfig 例子 {"name":"pipline1", "type":"simple", "input":{...}, "filter":{...}, "output":{...}}
 func (j JsonFactory) CreatePipelineConfig() Pipeline {
-	  pipeline := Pipeline{}
-	  pipeline.loadConf = loadJson
-	  return pipeline
+    pipeline := Pipeline{}
+    pipeline.loadConf = loadJson
+    return pipeline
 }
 
 
@@ -228,25 +228,25 @@ type YamlFactory struct {
 }
 
 func NewYamlFactory() *YamlFactory {
-	  return &YamlFactory{}
+    return &YamlFactory{}
 }
 
 func (y YamlFactory) CreateInputConfig() Input {
-	  return Input{loadConf: loadYaml}
+    return Input{loadConf: loadYaml}
 }
 
 func (y YamlFactory) CreateFilterConfig() Filter {
-	  return Filter{loadConf: loadYaml}
+    return Filter{loadConf: loadYaml}
 }
 
 func (y YamlFactory) CreateOutputConfig() Output {
-	  return Output{loadConf: loadYaml}
+    return Output{loadConf: loadYaml}
 }
 
 func (y YamlFactory) CreatePipelineConfig() Pipeline {
-	  pipeline := Pipeline{}
-	  pipeline.loadConf = loadYaml
-	  return pipeline
+    pipeline := Pipeline{}
+    pipeline.loadConf = loadYaml
+    return pipeline
 }
 ```
 
@@ -255,33 +255,33 @@ func (y YamlFactory) CreatePipelineConfig() Pipeline {
 ```go
 // demo/monitor/monitor_system.go
 type System struct {
-	  plugins       map[string]plugin.Plugin
+    plugins       map[string]plugin.Plugin
     // 关键点3: 在使用时依赖抽象工厂接口
-	  configFactory config.Factory
+    configFactory config.Factory
 }
 
 func NewSystem(configFactory config.Factory) *System {
-	  return &System{
-		  plugins:       make(map[string]plugin.Plugin),
-		  configFactory: configFactory,
-	  }
+    return &System{
+      plugins:       make(map[string]plugin.Plugin),
+      configFactory: configFactory,
+    }
 }
 
 func (s *System) LoadConf(conf string) error {
-	  pipelineConf := s.configFactory.CreatePipelineConfig()
-	  if err := pipelineConf.Load(conf); err != nil {
-	  	return err
-	  }
-	  ...
+    pipelineConf := s.configFactory.CreatePipelineConfig()
+    if err := pipelineConf.Load(conf); err != nil {
+      return err
+    }
+    ...
 }
 
 
 // demo/example.go
 func main() {
     // 关键点4: 在初始化是依赖注入具体的工厂实现
-	  monitorSys := monitor.NewSystem(config.NewYamlFactory())
-	  conf, _ := ioutil.ReadFile("monitor_pipeline.yaml")
-	  monitorSys.LoadConf(string(conf))
+    monitorSys := monitor.NewSystem(config.NewYamlFactory())
+    conf, _ := ioutil.ReadFile("monitor_pipeline.yaml")
+    monitorSys.LoadConf(string(conf))
     ...
 }
 ```
@@ -324,5 +324,3 @@ func main() {
 > [3] [Design Patterns, Chapter 3. Creational Patterns](https://learning.oreilly.com/library/view/design-patterns-elements/0201633612/), GoF
 >
 > 更多文章请关注微信公众号：**元闰子的邀请**
-
-#### 
