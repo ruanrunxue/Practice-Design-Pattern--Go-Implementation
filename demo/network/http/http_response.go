@@ -32,6 +32,21 @@ func ResponseOfId(reqId ReqId) *Response {
 	}
 }
 
+func (r *Response) Clone() *Response {
+	return &Response{
+		reqId:          r.reqId,
+		statusCode:     r.statusCode,
+		headers:        r.headers,
+		body:           r.body,
+		problemDetails: r.problemDetails,
+	}
+}
+
+func (r *Response) AddReqId(reqId ReqId) *Response {
+	r.reqId = reqId
+	return r
+}
+
 func (r *Response) AddStatusCode(statusCode StatusCode) *Response {
 	r.statusCode = statusCode
 	return r

@@ -52,8 +52,7 @@ func (s *ServiceMediator) Forward(req *http.Request) *http.Response {
 			AddStatusCode(http.StatusInternalServerError).
 			AddProblemDetails("forward http req failed: " + err.Error())
 	}
-	return http.ResponseOfId(req.ReqId()).AddHeaders(resp.Headers()).AddStatusCode(resp.StatusCode()).
-		AddProblemDetails(resp.ProblemDetails()).AddBody(resp.Body())
+	return resp.Clone().AddReqId(req.ReqId())
 }
 
 func (s *ServiceMediator) Run() error {
