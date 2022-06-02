@@ -38,8 +38,7 @@ func (s *ServiceMediator) Forward(req *http.Request) *http.Response {
 			AddStatusCode(http.StatusInternalServerError).
 			AddProblemDetails("discovery " + string(svcType) + " failed: " + err.Error())
 	}
-	forwardReq := http.EmptyRequest().AddUri(svcUri).AddMethod(req.Method()).
-		AddHeaders(req.Headers()).AddQueryParams(req.QueryParams()).AddBody(req.Body())
+	forwardReq := req.Clone().AddUri(svcUri)
 	client, err := http.NewClient(s.sidecarFactory.Create(), s.localIp)
 	if err != nil {
 		return http.ResponseOfId(req.ReqId()).

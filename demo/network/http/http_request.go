@@ -41,6 +41,19 @@ func EmptyRequest() *Request {
 	}
 }
 
+// Clone 原型模式，其中reqId重新生成，其他都拷贝原来的值
+func (r *Request) Clone() *Request {
+	reqId := rand.Uint32() % 10000
+	return &Request{
+		reqId:       ReqId(reqId),
+		method:      r.method,
+		uri:         r.uri,
+		queryParams: r.queryParams,
+		headers:     r.headers,
+		body:        r.body,
+	}
+}
+
 func (r *Request) IsInValid() bool {
 	return r.method < 1 || r.method > 4 || r.uri == ""
 }
