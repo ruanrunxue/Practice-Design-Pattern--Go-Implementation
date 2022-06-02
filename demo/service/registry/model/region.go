@@ -14,3 +14,11 @@ type Region struct {
 func NewRegion(id string) *Region {
 	return &Region{Id: id}
 }
+
+func (r *Region) Clone() *Region {
+	return &Region{
+		Id:      r.Id,
+		Name:    r.Name,
+		Country: r.Country,
+	}
+}

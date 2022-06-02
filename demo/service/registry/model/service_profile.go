@@ -49,8 +49,15 @@ func (s *ServiceProfile) ToTableRecord() *ServiceProfileRecord {
 }
 
 func (s *ServiceProfile) Clone() Cloneable {
-	sp := *s
-	return &sp
+	return &ServiceProfile{
+		Id:       s.Id,
+		Type:     s.Type,
+		Status:   s.Status,
+		Endpoint: s.Endpoint,
+		Region:   s.Region.Clone(),
+		Priority: s.Priority,
+		Load:     s.Load,
+	}
 }
 
 type serviceProfileBuild struct {
