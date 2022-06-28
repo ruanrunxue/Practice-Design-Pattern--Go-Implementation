@@ -17,7 +17,7 @@
 | 结构型模式 |         适配器模式（Adapter）         |             [db.TableRender](demo/db/console.go)             |                                                              |
 |            |          桥接模式（Bridge）           | [pipeline.pipelineTemplate](demo/monitor/pipeline/pipeline_plugin.go) |                                                              |
 |            |         组合模式（Composite）         | [pipeline.pipelineTemplate](demo/monitor/pipeline/pipeline_plugin.go) |                                                              |
-|            |        装饰者模式（Decorator）        | [sidecar.FlowCtrlSidecar](demo/sidecar/flowctrl_sidecar.go)  |                                                              |
+|            |        装饰者模式（Decorator）        | [sidecar.FlowCtrlSidecar](demo/sidecar/flowctrl_sidecar.go)  | [【Go实现】实践GoF的23种设计模式: 装饰者模式](docs/go_ractice_design_pattern__decorator.md) |
 |            |          外观模式（Facade）           | [shopping.Center](demo/service/shopping/shopping_center.go)  |                                                              |
 |            |         享元模式（Flyweight）         |    [model.Region](demo/service/registry/model/region.go)     |                                                              |
 |            |           代理模式（Proxy）           |              [db.CacheProxy](demo/db/cache.go)               |                                                              |
