@@ -25,7 +25,7 @@ type Socket interface {
 
 // socketImpl Socket的默认实现
 type socketImpl struct {
-	listener SocketListener
+	listeners []SocketListener
 }
 
 func DefaultSocket() *socketImpl {
@@ -45,9 +45,11 @@ func (s *socketImpl) Send(packet *Packet) error {
 }
 
 func (s *socketImpl) Receive(packet *Packet) {
-	s.listener.Handle(packet)
+	for _, listener := range s.listeners {
+		listener.Handle(packet)
+	}
 }
 
 func (s *socketImpl) AddListener(listener SocketListener) {
-	s.listener = listener
+	s.listeners = append(s.listeners, listener)
 }
