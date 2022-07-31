@@ -13,7 +13,7 @@ import (
 // TableIterator 表迭代器接口
 type TableIterator interface {
 	HasNext() bool
-	Next(next interface{}) error
+	Next(result interface{}) error
 }
 
 // TableIteratorFactory 表迭代器工厂
@@ -21,7 +21,7 @@ type TableIteratorFactory interface {
 	Create(table *Table) TableIterator
 }
 
-// tableIteratorImpl 随机迭代器
+// tableIteratorImpl 迭代器基类
 type tableIteratorImpl struct {
 	records []record
 	cursor  int
@@ -61,19 +61,19 @@ func NewRandomTableIteratorFactory() *randomTableIteratorFactory {
 	return &randomTableIteratorFactory{}
 }
 
-// Less 如果i<j返回ture，否则返回false
-type Less func(i, j interface{}) bool
+// Comparator 如果i<j返回true，否则返回false
+type Comparator func(i, j interface{}) bool
 
 // records 辅助record记录根据主键排序
 type records struct {
-	less Less
-	rs   []record
+	comparator Comparator
+	rs         []record
 }
 
-func newRecords(rs []record, less Less) *records {
+func newRecords(rs []record, comparator Comparator) *records {
 	return &records{
-		less: less,
-		rs:   rs,
+		comparator: comparator,
+		rs:         rs,
 	}
 }
 
@@ -82,7 +82,7 @@ func (r *records) Len() int {
 }
 
 func (r *records) Less(i, j int) bool {
-	return r.less(r.rs[i].primaryKey, r.rs[j].primaryKey)
+	return r.comparator(r.rs[i].primaryKey, r.rs[j].primaryKey)
 }
 
 func (r *records) Swap(i, j int) {
@@ -91,9 +91,9 @@ func (r *records) Swap(i, j int) {
 	r.rs[j] = tmp
 }
 
-// sortedTableIteratorFactory 根据主键进行排序，排序逻辑由Comparable定义
+// sortedTableIteratorFactory 根据主键进行排序，排序逻辑由Comparator定义
 type sortedTableIteratorFactory struct {
-	less Less
+	comparator Comparator
 }
 
 func (s *sortedTableIteratorFactory) Create(table *Table) TableIterator {
@@ -101,13 +101,13 @@ func (s *sortedTableIteratorFactory) Create(table *Table) TableIterator {
 	for _, r := range table.records {
 		records = append(records, r)
 	}
-	sort.Sort(newRecords(records, s.less))
+	sort.Sort(newRecords(records, s.comparator))
 	return &tableIteratorImpl{
 		records: records,
 		cursor:  0,
 	}
 }
 
-func NewSortedTableIteratorFactory(less Less) *sortedTableIteratorFactory {
-	return &sortedTableIteratorFactory{less: less}
+func NewSortedTableIteratorFactory(comparator Comparator) *sortedTableIteratorFactory {
+	return &sortedTableIteratorFactory{comparator: comparator}
 }

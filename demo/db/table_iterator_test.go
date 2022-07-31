@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -10,15 +11,19 @@ func TestRandomTableIterator(t *testing.T) {
 	table.Insert(1, &testRegion{Id: 1, Name: "beijing"})
 	table.Insert(2, &testRegion{Id: 2, Name: "shanghai"})
 	table.Insert(3, &testRegion{Id: 3, Name: "guangdong"})
-	iter := table.Iterator()
+	hasNext, next := table.ClosureIterator()
 	for i := 0; i < 3; i++ {
-		if !iter.HasNext() {
+		if !hasNext() {
 			t.Error("records size error")
 		}
 		region := new(testRegion)
-		if err := iter.Next(region); err != nil {
+		if err := next(region); err != nil {
 			t.Error(err)
 		}
+		fmt.Printf("%+v\n", region)
+	}
+	if hasNext() {
+		t.Error("should not has next")
 	}
 }
 

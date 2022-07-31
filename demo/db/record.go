@@ -7,8 +7,8 @@ import (
 
 type record struct {
 	primaryKey interface{}
-	fields     map[string]int
-	values     []interface{}
+	fields     map[string]int // key为属性名，value属性值的索引
+	values     []interface{}  // 存储属性值
 }
 
 func recordFrom(key interface{}, value interface{}) (r record, e error) {
