@@ -101,7 +101,7 @@ func (m *memoryDb) ExecDsl(dsl string) (*DslResult, error) {
 	result := NewDslResult()
 	for _, f := range ctx.Fields() {
 		field := strings.ToLower(f)
-		if idx, ok := record.fields[field]; ok {
+		if idx, ok := table.(*Table).metadata[field]; ok {
 			result.Add(field, record.values[idx])
 		}
 	}
