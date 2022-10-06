@@ -48,6 +48,14 @@ func (m *memoryDb) Query(tableName string, primaryKey interface{}, result interf
 	return table.(*Table).QueryByPrimaryKey(primaryKey, result)
 }
 
+func (m *memoryDb) QueryByField(tableName string, field string, value interface{}) ([]interface{}, error) {
+	table, ok := m.tables.Load(tableName)
+	if !ok {
+		return nil, ErrTableNotExist
+	}
+	return table.(*Table).Accept(NewFieldEqVisitor(field, value))
+}
+
 func (m *memoryDb) QueryByVisitor(tableName string, visitor TableVisitor) ([]interface{}, error) {
 	table, ok := m.tables.Load(tableName)
 	if !ok {

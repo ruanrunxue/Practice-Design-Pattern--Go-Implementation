@@ -18,6 +18,7 @@ type Db interface {
 	DeleteTable(tableName string) error
 
 	Query(tableName string, primaryKey interface{}, result interface{}) error
+	QueryByField(tableName string, field string, value interface{}) ([]interface{}, error)
 	QueryByVisitor(tableName string, visitor TableVisitor) ([]interface{}, error)
 	Insert(tableName string, primaryKey interface{}, record interface{}) error
 	Update(tableName string, primaryKey interface{}, record interface{}) error
