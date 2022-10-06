@@ -30,7 +30,7 @@
 |            |           状态模式（State）           |     [flowctrl.state](demo/sidecar/flowctrl/fc_state.go)      |                                                              |
 |            |         策略模式（Strategy）          |      [input.Plugin](demo/monitor/input/input_plugin.go)      |                                                              |
 |            |    模板方法模式（Template Method）    | [flowctrl.stateTemplate](demo/sidecar/flowctrl/fc_state.go)  |                                                              |
-|            |         访问者模式（Visitor）         |         [db.TableVisitor](demo/db/table_visitor.go)          |                                                              |
+|            |         访问者模式（Visitor）         |         [db.TableVisitor](demo/db/table_visitor.go)          | [【Go实现】实践GoF的23种设计模式: 访问者模式](docs/go_practice_design_pattern__visitor.md) |
 
 ## 示例代码demo介绍
 
