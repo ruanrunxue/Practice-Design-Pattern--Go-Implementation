@@ -16,6 +16,13 @@ type FieldEqVisitor struct {
 	value interface{}
 }
 
+func NewFieldEqVisitor(field string, value interface{}) *FieldEqVisitor {
+	return &FieldEqVisitor{
+		field: field,
+		value: value,
+	}
+}
+
 func (f *FieldEqVisitor) Visit(table *Table) ([]interface{}, error) {
 	result := make([]interface{}, 0)
 	idx, ok := table.metadata[f.field]

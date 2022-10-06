@@ -58,3 +58,23 @@ func TestFieldEqVisitor(t *testing.T) {
 		t.Errorf("visit failed, want ErrRecordNotFound, got %v", err)
 	}
 }
+
+func TestFieldEqVisitorFunc(t *testing.T) {
+	table := NewTable("testRegion").WithType(reflect.TypeOf(new(testRegion)))
+	table.Insert(1, &testRegion{Id: 1, Name: "beijing"})
+	table.Insert(2, &testRegion{Id: 2, Name: "beijing"})
+	table.Insert(3, &testRegion{Id: 3, Name: "guangdong"})
+
+	result, err := table.AcceptFunc(NewFieldEqVisitorFunc("name", "beijing"))
+	if err != nil {
+		t.Error(err)
+	}
+	if len(result) != 2 {
+		t.Errorf("visit failed, want 2, got %d", len(result))
+	}
+
+	result, err = table.AcceptFunc(NewFieldEqVisitorFunc("id", 4))
+	if err != ErrRecordNotFound {
+		t.Errorf("visit failed, want ErrRecordNotFound, got %v", err)
+	}
+}
