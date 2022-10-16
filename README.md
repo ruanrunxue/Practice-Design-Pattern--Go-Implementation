@@ -20,7 +20,7 @@
 |            |        装饰者模式（Decorator）        | [sidecar.FlowCtrlSidecar](demo/sidecar/flowctrl_sidecar.go)  | [【Go实现】实践GoF的23种设计模式: 装饰者模式](docs/go_practice_design_pattern__decorator.md) |
 |            |          外观模式（Facade）           | [shopping.Center](demo/service/shopping/shopping_center.go)  |                                                              |
 |            |         享元模式（Flyweight）         |    [model.Region](demo/service/registry/model/region.go)     |                                                              |
-|            |           代理模式（Proxy）           |              [db.CacheProxy](demo/db/cache.go)               |                                                              |
+|            |           代理模式（Proxy）           |              [db.CacheProxy](demo/db/cache.go)               | [【Go实现】实践GoF的23种设计模式: 代理模式](docs/go_practice_design_pattern__proxy.md) |
 | 行为型模式 | 责任链模式（Chain Of Responsibility） |     [filter.Chain](demo/monitor/filter/filter_chain.go)      |                                                              |
 |            |          命令模式（Command）          |             [db.Command](demo/db/transaction.go)             |                                                              |
 |            |        迭代器模式（Iterator）         |        [db.TableIterator](demo/db/table_iterator.go)         | [【Go实现】实践GoF的23种设计模式: 迭代器模式](docs/go_practice_design_pattern__iterator.md) |
