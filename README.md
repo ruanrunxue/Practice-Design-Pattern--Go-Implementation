@@ -25,7 +25,7 @@
 |            |          命令模式（Command）          |             [db.Command](demo/db/transaction.go)             | [【Go实现】实践GoF的23种设计模式: 命令模式](docs/go_practice_design_pattern__command.md) |
 |            |        迭代器模式（Iterator）         |        [db.TableIterator](demo/db/table_iterator.go)         | [【Go实现】实践GoF的23种设计模式: 迭代器模式](docs/go_practice_design_pattern__iterator.md) |
 |            |        中介者模式（Mediator）         |    [mediator.Mediator](demo/service/mediator/mediator.go)    |                                                              |
-|            |         备忘录模式（Memento）         |           [db.CmdHistory](demo/db/transaction.go)            |                                                              |
+|            |         备忘录模式（Memento）         |           [db.CmdHistory](demo/db/transaction.go)            | [【Go实现】实践GoF的23种设计模式: 备忘录模式](docs/go_practice_design_pattern__memento.md) |
 |            |        观察者模式（Observer）         |         [network.socketImpl](demo/network/socket.go)         | [【Go实现】实践GoF的23种设计模式: 观察者模式](docs/go_practice_design_pattern__observer.md) |
 |            |           状态模式（State）           |     [flowctrl.state](demo/sidecar/flowctrl/fc_state.go)      |                                                              |
 |            |         策略模式（Strategy）          |      [input.Plugin](demo/monitor/input/input_plugin.go)      |                                                              |

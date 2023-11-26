@@ -28,13 +28,13 @@ GoF 对**命令模式**（Command Pattern）的定义如下：
 
 ## UML 结构
 
-![](https://tva1.sinaimg.cn/large/008vxvgGgy1h9bubr1nh3j31ai0qcten.jpg)
+![](http://yrunz-1300638001.cos.ap-guangzhou.myqcloud.com/2023-11-22-233054.png)
 
 ## 场景上下文
 
 在 [简单的分布式应用系统](https://github.com/ruanrunxue/Practice-Design-Pattern--Go-Implementation/blob/main/docs/go_ractice_design_pattern__solid_principle.md)（示例代码工程）中，db 模块用来存储服务注册信息和系统监控数据。其中，服务注册信息拆成了 `profiles` 和 `regions` 两个表，在服务发现的业务逻辑中，通常需要同时操作两个表，为了避免两个表数据不一致的问题，**db 模块需要提供事务功能**:
 
-![](https://tva1.sinaimg.cn/large/008vxvgGgy1h983f86ttcj31660owq7n.jpg)
+![](http://yrunz-1300638001.cos.ap-guangzhou.myqcloud.com/2023-11-22-233012.png)
 
 事务的核心功能之一是，当其中某个语句执行失败时，之前已执行成功的语句能够回滚，而使用命令模式能够很方便地实现该功能。
 
