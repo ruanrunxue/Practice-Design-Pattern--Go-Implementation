@@ -52,7 +52,7 @@ func TestFieldEqVisitor(t *testing.T) {
 		t.Errorf("visit failed, want 2, got %d", len(result))
 	}
 
-	visitor2 := &FieldEqVisitor{field: "id", value: 4}
+	visitor2 := &FieldEqVisitor{field: "Id", value: 4}
 	result, err = table.Accept(visitor2)
 	if err != ErrRecordNotFound {
 		t.Errorf("visit failed, want ErrRecordNotFound, got %v", err)
@@ -73,7 +73,7 @@ func TestFieldEqVisitorFunc(t *testing.T) {
 		t.Errorf("visit failed, want 2, got %d", len(result))
 	}
 
-	result, err = table.AcceptFunc(NewFieldEqVisitorFunc("id", 4))
+	result, err = table.AcceptFunc(NewFieldEqVisitorFunc("Id", 4))
 	if err != ErrRecordNotFound {
 		t.Errorf("visit failed, want ErrRecordNotFound, got %v", err)
 	}

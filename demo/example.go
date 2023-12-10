@@ -65,4 +65,7 @@ func main() {
 	shopping.NewConsumer("paul").UsePhone("192.168.0.8").
 		LoginShoppingCenter(shoppingCenter.Endpoint()).
 		Buy("iphone13")
+
+	console := db.NewConsole(mdb)
+	console.Start()
 }

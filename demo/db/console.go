@@ -26,21 +26,23 @@ func NewConsole(db Db) *Console {
 }
 
 func (c *Console) Start() {
-	fmt.Println("enter exit to end.")
-	fmt.Println("please enter a dsl expression:")
+	fmt.Println("welcome to Demo DB, enter exit to end!")
+	fmt.Println("> please enter a sql expression:")
+	fmt.Print("> ")
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		dsl := scanner.Text()
-		if dsl == "exit" {
+		sql := scanner.Text()
+		if sql == "exit" {
 			break
 		}
-		result, err := c.db.ExecDsl(dsl)
+		result, err := c.db.ExecSql(sql)
 		if err == nil {
 			c.Output(NewTableRender(result))
 		} else {
 			c.Output(NewErrorRender(err))
 		}
-		fmt.Println("please enter a dsl expression:")
+		fmt.Println("> please enter a sql expression:")
+		fmt.Print("> ")
 	}
 }
 
@@ -49,10 +51,10 @@ func (c *Console) Output(render ConsoleRender) {
 }
 
 type TableRender struct {
-	result *DslResult
+	result *SqlResult
 }
 
-func NewTableRender(result *DslResult) *TableRender {
+func NewTableRender(result *SqlResult) *TableRender {
 	return &TableRender{result: result}
 }
 

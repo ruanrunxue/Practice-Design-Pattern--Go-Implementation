@@ -26,5 +26,5 @@ type Db interface {
 
 	CreateTransaction(name string) *Transaction
 
-	ExecDsl(dsl string) (*DslResult, error)
+	ExecSql(sql string) (*SqlResult, error)
 }

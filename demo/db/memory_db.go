@@ -92,11 +92,11 @@ func (m *memoryDb) CreateTransaction(name string) *Transaction {
 	return NewTransaction(name, m)
 }
 
-func (m *memoryDb) ExecDsl(dsl string) (*DslResult, error) {
-	ctx := NewDslContext()
-	express := &CompoundExpression{dsl: dsl}
+func (m *memoryDb) ExecSql(sql string) (*SqlResult, error) {
+	ctx := NewSqlContext()
+	express := &CompoundExpression{sql: sql}
 	if err := express.Interpret(ctx); err != nil {
-		return nil, ErrDslInvalidGrammar
+		return nil, ErrSqlInvalidGrammar
 	}
 	table, ok := m.tables.Load(ctx.TableName())
 	if !ok {
@@ -106,7 +106,7 @@ func (m *memoryDb) ExecDsl(dsl string) (*DslResult, error) {
 	if !ok {
 		return nil, ErrRecordNotFound
 	}
-	result := NewDslResult()
+	result := NewSqlResult()
 	for _, f := range ctx.Fields() {
 		field := strings.ToLower(f)
 		if idx, ok := table.(*Table).metadata[field]; ok {
