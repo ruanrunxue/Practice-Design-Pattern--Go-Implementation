@@ -5,10 +5,10 @@
 | 归类       |                 模式                  |                           示例代码                           |                             文章                             |
 | ---------- | :-----------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | SOLID原则  |          单一职责原则（SRP）          |    [registry.Registry](demo/service/registry/registry.go)    | [【Go实现】实践GoF的23种设计模式: SOLID原则](docs/go_practice_design_pattern__solid_principle.md) |
-|            |            开闭原则（OCP）            | [pipeline.Plugin](demo/monitor/pipeline/pipeline_plugin.go)  |                                                              |
-|            |          里氏替换原则（LSP）          | [pipeline.NewPlugin](demo/monitor/pipeline/pipeline_plugin.go) |                                                              |
-|            |          接口隔离原则（ISP）          |                    [mq.Mq](demo/mq/mq.go)                    |                                                              |
-|            |          依赖倒置原则（DIP）          |                    [db.Db](demo/db/db.go)                    |                                                              |
+|            |            开闭原则（OCP）            | [pipeline.Plugin](demo/monitor/pipeline/pipeline_plugin.go)  |                              /                               |
+|            |          里氏替换原则（LSP）          | [pipeline.NewPlugin](demo/monitor/pipeline/pipeline_plugin.go) |                              /                               |
+|            |          接口隔离原则（ISP）          |                    [mq.Mq](demo/mq/mq.go)                    |                              /                               |
+|            |          依赖倒置原则（DIP）          |                    [db.Db](demo/db/db.go)                    |                              /                               |
 | 创建型模式 |         单例模式（Singleton）         |          [network.network](demo/network/network.go)          | [【Go实现】实践GoF的23种设计模式: 单例模式](docs/go_practice_design_pattern__singleton.md) |
 |            |         建造者模式（Builder）         | [model.serviceProfileBuild](demo/service/registry/model/service_profile.go) | [【Go实现】实践GoF的23种设计模式: 建造者模式](docs/go_practice_design_pattern__builder.md) |
 |            |    工厂方法模式（Factory Method）     |      [sidecar.Factory](demo/sidecar/sidecar_factory.go)      | [【Go实现】实践GoF的23种设计模式: 工厂方法模式](docs/go_practice_design_pattern__factory_method.md) |
@@ -31,6 +31,7 @@
 |            |         策略模式（Strategy）          |      [input.Plugin](demo/monitor/input/input_plugin.go)      |                                                              |
 |            |    模板方法模式（Template Method）    | [flowctrl.stateTemplate](demo/sidecar/flowctrl/fc_state.go)  |                                                              |
 |            |         访问者模式（Visitor）         |         [db.TableVisitor](demo/db/table_visitor.go)          | [【Go实现】实践GoF的23种设计模式: 访问者模式](docs/go_practice_design_pattern__visitor.md) |
+|            |       解释器模式（Interpreter）       |              [db.SqlExpression](demo/db/sql.go)              | [【Go实现】实践GoF的23种设计模式: 解释器模式](docs/go_practice_design_pattern__interpreter.md) |
 
 ## 示例代码demo介绍
 
